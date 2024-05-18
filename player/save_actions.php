@@ -1,64 +1,55 @@
 <?php
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
-if (!$game_data) {
-    die('Игра еще не началась.');
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $country_name = $_POST['country'];
+    $actions = [];
 
-$country_name = $_POST['country'];
-$country = null;
-
-foreach ($game_data['countries'] as $c) {
-    if ($c['name'] === $country_name) {
-        $country = $c;
-        break;
+    if (isset($_POST['build_nuclear_technology'])) {
+        $actions['build_nuclear_technology'] = true;
     }
-}
 
-if (!$country) {
-    die('Страна не найдена.');
-}
-
-$actions = [];
-
-// Запись действий игрока
-if (isset($_POST['build_nuclear_technology'])) {
-    $actions['build_nuclear_technology'] = true;
-}
-if (isset($_POST['build_nuclear_missile']) && $country['nuclear_technology']) {
-    $actions['build_nuclear_missile'] = (int)$_POST['build_nuclear_missile'];
-}
-if (isset($_POST['invest_in_ecology'])) {
-    $actions['invest_in_ecology'] = true;
-}
-if (isset($_POST['build_shield'])) {
-    $actions['build_shield'] = array_map('intval', $_POST['build_shield']);
-}
-if (isset($_POST['improve_city'])) {
-    $actions['improve_city'] = array_map('intval', $_POST['improve_city']);
-}
-if (isset($_POST['launch_missiles'])) {
-    $actions['launch_missiles'] = $_POST['launch_missiles'];
-}
-
-// Сохранение названий городов
-if (isset($_POST['city_names'])) {
-    foreach ($_POST['city_names'] as $index => $name) {
-        $country['cities'][$index]['name'] = $name;
+    if (isset($_POST['build_nuclear_missile'])) {
+        $actions['build_nuclear_missile'] = (int)$_POST['build_nuclear_missile'];
     }
+
+    if (isset($_POST['invest_in_ecology'])) {
+        $actions['invest_in_ecology'] = true;
+    }
+
+    if (isset($_POST['improve_city'])) {
+        $actions['improve_city'] = array_map('intval', $_POST['improve_city']);
+    }
+
+    if (isset($_POST['build_shield'])) {
+        $actions['build_shield'] = array_map('intval', $_POST['build_shield']);
+    }
+
+    if (isset($_POST['launch_missiles'])) {
+        $actions['launch_missiles'] = [];
+        foreach ($_POST['launch_missiles'] as $target_country => $cities) {
+            $actions['launch_missiles'][$target_country] = array_map('intval', $cities);
+        }
+    }
+
+    if (isset($_POST['loan_amount']) && $_POST['loan_amount'] > 0) {
+        $actions['loan_amount'] = (int)$_POST['loan_amount'];
+    }
+
+    $actions_data = loadActionsData();
+    $actions_data[$country_name] = $actions;
+    saveActionsData($actions_data);
+
+    $game_data = loadGameData();
+    foreach ($game_data['countries'] as &$country) {
+        if ($country['name'] === $country_name) {
+            $country['ready'] = true;
+            break;
+        }
+    }
+    saveGameData($game_data);
+
+    header('Location: wait.php');
+    exit();
 }
-
-$actions_data = loadActionsData();
-$actions_data[$country_name] = $actions;
-saveActionsData($actions_data);
-
-// Обновление статуса готовности страны в game_data.json
-$country_index = array_search($country, $game_data['countries']);
-$game_data['countries'][$country_index] = $country;
-$game_data['countries'][$country_index]['ready'] = true;
-saveGameData($game_data);
-
-header('Location: wait.php?country=' . urlencode($country_name));
-exit();
 ?>

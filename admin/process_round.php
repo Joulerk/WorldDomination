@@ -68,8 +68,21 @@ foreach ($game_data['countries'] as &$country) {
             }
         }
 
+        // Обработка кредита
+        if (isset($actions['loan_amount']) && $actions['loan_amount'] > 0) {
+            $loan_amount = $actions['loan_amount'];
+            $country['money'] += $loan_amount;
+            $country['loan'] = $loan_amount;
+        }
+
         // Сброс готовности страны
         $country['ready'] = false;
+    }
+
+    // Возврат кредита с процентами
+    if (isset($country['loan']) && $country['loan'] > 0) {
+        $country['money'] -= $country['loan'] * 1.25;
+        unset($country['loan']);
     }
 
     // Расчет заработка

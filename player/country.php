@@ -1,17 +1,6 @@
 <?php
-require_once '../includes/functions.php';
-
-
 session_start();
-if (!isset($_SESSION['country_logged_in']) || $_GET['country'] !== $_SESSION['country_logged_in']) {
-    header('Location: index.php');
-    exit();
-}
-
 require_once '../includes/functions.php';
-
-// остальной код страницы страны
-
 
 $game_data = loadGameData();
 if (!$game_data) {
@@ -31,6 +20,8 @@ foreach ($game_data['countries'] as $c) {
 if (!$country) {
     die('Страна не найдена.');
 }
+
+$can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
 ?>
 
 <!DOCTYPE html>
@@ -97,6 +88,22 @@ if (!$country) {
                     <label>Вложиться в экологию</label>
                     <input type="checkbox" id="invest_in_ecology" name="invest_in_ecology" <?php echo ($country['money'] < 50) ? 'disabled' : ''; ?>>
                 </div>
+
+                <h3>Банк</h3>
+                <div class="form-group">
+                    <label for="loan_amount">Взять кредит:</label>
+                    <select id="loan_amount" name="loan_amount" class="form-control" <?php echo !$can_take_loan ? 'disabled' : ''; ?>>
+                        <option value="0">Не брать кредит</option>
+                        <option value="100">100 монет</option>
+                        <option value="200">200 монет</option>
+                        <option value="300">300 монет</option>
+                        <option value="450">450 монет</option>
+                    </select>
+                </div>
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-success btn-lg">Готов</button>
+                </div>
+            </form>
         </div>
         <div class="col-md-6">
             <h3>Другие страны</h3>
@@ -124,10 +131,6 @@ if (!$country) {
             <?php endforeach; ?>
         </div>
     </div>
-    <div class="text-center mt-5">
-        <button type="submit" class="btn btn-success btn-lg">Готов</button>
-    </div>
-    </form>
 </div>
 
 <?php include '../includes/footer.php'; ?>
@@ -157,42 +160,46 @@ if (!$country) {
                 money -= 50;
             }
 
-            $('input[name="build_shield[]"]:checked').each(function() {
-                money -= 300;
-            });
-
+            // Обновление предварительного просмотра для улучшений городов
             $('input[name="improve_city[]"]:checked').each(function() {
                 money -= 300;
             });
 
+            // Обновление предварительного просмотра для постройки щитов
+            $('input[name="build_shield[]"]:checked').each(function() {
+                money -= 300;
+            });
+
+            // Обновление предварительного просмотра для кредитов
+            var loan_amount = parseInt($('#loan_amount').val()) || 0;
+            money += loan_amount;
+
             $('#money').text(money);
             $('#nuclear_missiles').text(nuclear_missiles);
 
-            // Обновление доступности чекбоксов для запуска ракет
-            $('input[name^="launch_missiles"]').prop('disabled', nuclear_missiles <= 0);
-            var launch_count = $('input[name^="launch_missiles"]:checked').length;
-            if (launch_count >= nuclear_missiles) {
-                $('input[name^="launch_missiles"]').not(':checked').prop('disabled', true);
-            }
+            // Блокировка действий при недостатке денег
+            $('input[type="checkbox"], select').each(function() {
+                if ($(this).attr('name') === 'build_nuclear_missile' || $(this).attr('name') === 'loan_amount') {
+                    return;
+                }
+
+                var cost = 0;
+                if ($(this).attr('name') === 'build_nuclear_technology') {
+                    cost = 450;
+                } else if ($(this).attr('name') === 'invest_in_ecology') {
+                    cost = 50;
+                } else if ($(this).attr('name') === 'improve_city[]' || $(this).attr('name') === 'build_shield[]') {
+                    cost = 300;
+                }
+
+                $(this).prop('disabled', $(this).is(':checked') ? false : money < cost);
+            });
 
             // Обновление доступности кнопки "Готов"
-            $('#readyButton').prop('disabled', money < 0);
-
-            // Проверка и блокировка чекбоксов при отрицательном балансе
-            if (money < 0) {
-                $('input[type="checkbox"]:checked').each(function() {
-                    if (!$(this).data('initiallyChecked')) {
-                        $(this).prop('checked', false);
-                    }
-                });
-                updatePreview();
-            }
+            $('button[type="submit"]').prop('disabled', money < 0);
         }
 
         $('input, select').on('change', updatePreview);
-        $('input[type="checkbox"]').each(function() {
-            $(this).data('initiallyChecked', $(this).is(':checked'));
-        });
         updatePreview();
     });
 </script>

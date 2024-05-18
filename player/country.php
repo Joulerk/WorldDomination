@@ -64,11 +64,11 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
                             <p>Статус: <?php echo $city['alive'] ? '✔️' : '❌'; ?></p>
                             <div class="form-group">
                                 <label for="build_shield_<?php echo $city_index; ?>">Построить щит</label>
-                                <input type="checkbox" id="build_shield_<?php echo $city_index; ?>" name="build_shield[]" value="<?php echo $city_index; ?>" <?php echo ($city['shield'] || !$country['nuclear_technology'] || $country['money'] < 300 || !$country['alive']) ? 'disabled' : ''; ?>>
+                                <input type="checkbox" id="build_shield_<?php echo $city_index; ?>" name="build_shield[]" value="<?php echo $city_index; ?>" <?php echo ($city['shield'] || !$country['nuclear_technology'] || $country['money'] < 300 || !$city['alive']) ? 'disabled' : ''; ?>>
                             </div>
                             <div class="form-group">
                                 <label for="improve_city_<?php echo $city_index; ?>">Улучшить развитие</label>
-                                <input type="checkbox" id="improve_city_<?php echo $city_index; ?>" name="improve_city[]" value="<?php echo $city_index; ?>" <?php echo ($country['money'] < 300 || !$country['alive']) ? 'disabled' : ''; ?>>
+                                <input type="checkbox" id="improve_city_<?php echo $city_index; ?>" name="improve_city[]" value="<?php echo $city_index; ?>" <?php echo ($country['money'] < 300 || !$city['alive']) ? 'disabled' : ''; ?>>
                             </div>
                         </div>
                     </div>
@@ -141,6 +141,7 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
     $(document).ready(function() {
         var initialMoney = <?php echo $country['money']; ?>;
         var initialNuclearMissiles = <?php echo $country['nuclear_missiles']; ?>;
+        var nuclearTechnology = <?php echo $country['nuclear_technology'] ? 'true' : 'false'; ?>;
 
         function updatePreview() {
             var money = initialMoney;
@@ -195,11 +196,19 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
                     cost = 300;
                 }
 
-                $(this).prop('disabled', $(this).is(':checked') ? false : money < cost);
+                var isNuclearRequired = $(this).attr('name') === 'build_shield[]';
+                var hasNuclearTechnology = nuclearTechnology;
+
+                $(this).prop('disabled', $(this).is(':checked') ? false : (money < cost || (isNuclearRequired && !hasNuclearTechnology)));
             });
 
             // Обновление доступности кнопки "Готов"
             $('button[type="submit"]').prop('disabled', money < 0);
+
+            // Блокировка запуска ракет при недостатке ракет
+            $('input[name^="launch_missiles"]').each(function() {
+                $(this).prop('disabled', nuclear_missiles <= 0 || !$(this).is(':checked') && nuclear_missiles <= 0);
+            });
         }
 
         $('input, select').on('change', updatePreview);

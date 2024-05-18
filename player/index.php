@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-success mt-3">Начать игру</button>
             </form>
+            <a href="results.php" class="btn btn-primary mt-3">Посмотреть итоги раунда</a>
         </div>
     </div>
 </div>

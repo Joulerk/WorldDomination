@@ -37,7 +37,10 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4"><?php echo htmlspecialchars($country['name']); ?></h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4"><?php echo htmlspecialchars($country['name']); ?></h1>
+        <a href="notifications.php?country=<?php echo urlencode($country_name); ?>" class="btn btn-info">Информация</a>
+    </div>
     <div class="text-center mb-4">
         <p>Количество монет: <span id="money"><?php echo $country['money']; ?></span></p>
         <p>Количество ядерных ракет: <span id="nuclear_missiles"><?php echo $country['nuclear_missiles']; ?></span></p>
@@ -61,11 +64,11 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
                             <p>Статус: <?php echo $city['alive'] ? '✔️' : '❌'; ?></p>
                             <div class="form-group">
                                 <label for="build_shield_<?php echo $city_index; ?>">Построить щит</label>
-                                <input type="checkbox" id="build_shield_<?php echo $city_index; ?>" name="build_shield[]" value="<?php echo $city_index; ?>" <?php echo ($city['shield'] || !$country['nuclear_technology'] || $country['money'] < 300) ? 'disabled' : ''; ?>>
+                                <input type="checkbox" id="build_shield_<?php echo $city_index; ?>" name="build_shield[]" value="<?php echo $city_index; ?>" <?php echo ($city['shield'] || !$country['nuclear_technology'] || $country['money'] < 300 || !$country['alive']) ? 'disabled' : ''; ?>>
                             </div>
                             <div class="form-group">
                                 <label for="improve_city_<?php echo $city_index; ?>">Улучшить развитие</label>
-                                <input type="checkbox" id="improve_city_<?php echo $city_index; ?>" name="improve_city[]" value="<?php echo $city_index; ?>" <?php echo ($country['money'] < 300) ? 'disabled' : ''; ?>>
+                                <input type="checkbox" id="improve_city_<?php echo $city_index; ?>" name="improve_city[]" value="<?php echo $city_index; ?>" <?php echo ($country['money'] < 300 || !$country['alive']) ? 'disabled' : ''; ?>>
                             </div>
                         </div>
                     </div>

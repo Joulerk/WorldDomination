@@ -4,20 +4,20 @@
     "countries": [
         {
             "name": "США",
-            "development": 15,
-            "money": 1292.5,
+            "development": 26.25,
+            "money": 246.25,
             "nuclear_missiles": 0,
-            "nuclear_technology": false,
+            "nuclear_technology": true,
             "cities": [
                 {
                     "name": "Нью-Йорк",
-                    "development": 15,
+                    "development": 30,
                     "shield": false,
                     "alive": true
                 },
                 {
                     "name": "Лос-Анджелес",
-                    "development": 15,
+                    "development": 30,
                     "shield": false,
                     "alive": true
                 },
@@ -29,7 +29,7 @@
                 },
                 {
                     "name": "Хьюстон",
-                    "development": 15,
+                    "development": 30,
                     "shield": false,
                     "alive": true
                 }
@@ -40,10 +40,10 @@
         },
         {
             "name": "Китай",
-            "development": 18.75,
-            "money": 756.25,
+            "development": 22.5,
+            "money": 1007.5,
             "nuclear_missiles": 0,
-            "nuclear_technology": true,
+            "nuclear_technology": false,
             "cities": [
                 {
                     "name": "Пекин",
@@ -59,7 +59,7 @@
                 },
                 {
                     "name": "Гуанчжоу",
-                    "development": 15,
+                    "development": 30,
                     "shield": false,
                     "alive": true
                 },

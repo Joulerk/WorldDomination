@@ -178,6 +178,11 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
             var loan_amount = parseInt($('#loan_amount').val()) || 0;
             money += loan_amount;
 
+            // Динамическое обновление количества ракет
+            $('input[name^="launch_missiles"]:checked').each(function() {
+                nuclear_missiles--;
+            });
+
             $('#money').text(money);
             $('#nuclear_missiles').text(nuclear_missiles);
 
@@ -207,7 +212,7 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
 
             // Блокировка запуска ракет при недостатке ракет
             $('input[name^="launch_missiles"]').each(function() {
-                $(this).prop('disabled', nuclear_missiles <= 0 || !$(this).is(':checked') && nuclear_missiles <= 0);
+                $(this).prop('disabled', nuclear_missiles <= 0 || (!$(this).is(':checked') && nuclear_missiles <= 0));
             });
         }
 

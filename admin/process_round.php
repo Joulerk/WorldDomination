@@ -6,6 +6,12 @@ if (!$game_data) {
     die('Игра еще не началась.');
 }
 
+// Проверка текущего раунда
+if ($game_data['current_round'] > 7) {
+    header('Location: manage_round.php');
+    exit();
+}
+
 $actions_data = loadActionsData();
 $notifications_data = json_decode(file_get_contents('../data/notifications.json'), true);
 
@@ -16,21 +22,21 @@ foreach ($game_data['countries'] as &$country) {
         $notifications = [];
 
         // Обработка постройки ядерной технологии
-        if (isset($actions['build_nuclear_technology'])) {
+        if (isset($actions['build_nuclear_technology']) && $actions['build_nuclear_technology']) {
             $country['nuclear_technology'] = true;
             $country['money'] -= 450;
             $notifications[] = "Построена ядерная технология (-450 монет)";
         }
 
         // Обработка постройки ядерных ракет
-        if (isset($actions['build_nuclear_missile'])) {
+        if (isset($actions['build_nuclear_missile']) && $actions['build_nuclear_missile'] > 0) {
             $country['nuclear_missiles'] += $actions['build_nuclear_missile'];
             $country['money'] -= $actions['build_nuclear_missile'] * 150;
             $notifications[] = "Построено ядерных ракет: {$actions['build_nuclear_missile']} (-" . ($actions['build_nuclear_missile'] * 150) . " монет)";
         }
 
         // Обработка вложений в экологию
-        if (isset($actions['invest_in_ecology'])) {
+        if (isset($actions['invest_in_ecology']) && $actions['invest_in_ecology']) {
             $game_data['global_ecology'] += 5;
             $country['money'] -= 50;
             $notifications[] = "Вложено в экологию (-50 монет)";
@@ -70,6 +76,7 @@ foreach ($game_data['countries'] as &$country) {
                                 $notifications[] = "Город: " . $target_country['cities'][$target_city_index]['name'] . " страны " . $target_country_name . " был уничтожен";
                             }
                             $country['nuclear_missiles'] -= 1;
+                            $notifications[] = "Запущена ядерная ракета по городу: " . $target_country['cities'][$target_city_index]['name'] . " страны " . $target_country_name;
                             break;
                         }
                     }

@@ -7,9 +7,11 @@ if (!$game_data) {
     die('Игра еще не началась.');
 }
 
-// Сброс метки завершенного пересчета раунда
-$game_data['round_calculated'] = false;
-saveGameData($game_data);
+// Сброс метки завершенного пересчета раунда, если текущий раунд меньше 7
+if ($game_data['current_round'] <= 7) {
+    $game_data['round_calculated'] = false;
+    saveGameData($game_data);
+}
 
 ?>
 
@@ -29,6 +31,7 @@ saveGameData($game_data);
     <div class="card shadow-sm mb-5">
         <div class="card-body">
             <h3 class="card-title">Статус готовности стран</h3>
+            <p>Текущий раунд: <?php echo $game_data['current_round']; ?>/7</p>
             <ul class="list-group">
                 <?php foreach ($game_data['countries'] as $country): ?>
                     <li class="list-group-item">
@@ -40,7 +43,7 @@ saveGameData($game_data);
     </div>
 
     <form action="process_round.php" method="POST">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Рассчитать раунд</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" <?php echo $game_data['current_round'] > 7 ? 'disabled' : ''; ?>>Рассчитать раунд</button>
     </form>
 </div>
 

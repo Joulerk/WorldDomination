@@ -1,13 +1,13 @@
 {
     "num_rounds": 7,
-    "current_round": 2,
+    "current_round": 1,
     "countries": [
         {
             "name": "США",
             "development": 15,
-            "money": 1405,
-            "nuclear_missiles": 0,
-            "nuclear_technology": false,
+            "money": 1000,
+            "nuclear_missiles": 2,
+            "nuclear_technology": true,
             "cities": [
                 {
                     "name": "Нью-Йорк",
@@ -41,7 +41,7 @@
         {
             "name": "Китай",
             "development": 15,
-            "money": 1405,
+            "money": 1000,
             "nuclear_missiles": 0,
             "nuclear_technology": false,
             "cities": [

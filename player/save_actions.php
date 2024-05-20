@@ -54,9 +54,10 @@ if (isset($_POST['launch_missiles'])) {
 // Сохранение названий городов
 if (isset($_POST['city_names'])) {
     foreach ($_POST['city_names'] as $index => $name) {
-        $country['cities'][$index]['name'] = $name;
+        $country['cities'][$index]['name'] = htmlspecialchars($name); // Применяем htmlspecialchars для защиты от XSS
     }
 }
+
 
 if (isset($_POST['loan_amount']) && $_POST['loan_amount'] > 0) {
     $actions['loan_amount'] = (int)$_POST['loan_amount'];

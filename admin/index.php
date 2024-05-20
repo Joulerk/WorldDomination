@@ -72,7 +72,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 <div class="container mt-5">
     <h1 class="text-center display-4 mb-4">Админ-панель</h1>
     <div class="row justify-content-center mt-5">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Создать игру</h5>
@@ -81,7 +81,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Управление раундом</h5>
@@ -90,12 +90,21 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Редактировать города</h5>
                     <p class="card-text">Редактируйте города и их данные</p>
                     <a href="edit_cities.php" class="btn btn-info btn-lg btn-block">Редактировать</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Редактировать настройки</h5>
+                    <p class="card-text">Редактируйте настройки игры</p>
+                    <a href="edit_settings.php" class="btn btn-secondary btn-lg btn-block">Настройки</a>
                 </div>
             </div>
         </div>

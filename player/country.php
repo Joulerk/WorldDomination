@@ -1,6 +1,11 @@
 <?php
-session_start();
 require_once '../includes/functions.php';
+
+session_start();
+if (!isset($_SESSION['country_logged_in']) || $_GET['country'] !== $_SESSION['country_logged_in']) {
+    header('Location: index.php');
+    exit();
+}
 
 $game_data = loadGameData();
 if (!$game_data) {
@@ -21,7 +26,8 @@ if (!$country) {
     die('Страна не найдена.');
 }
 
-$can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
+$notifications_data = json_decode(file_get_contents('../data/notifications.json'), true);
+$notifications = $notifications_data[$country_name] ?? [];
 ?>
 
 <!DOCTYPE html>
@@ -37,10 +43,7 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-4"><?php echo htmlspecialchars($country['name']); ?></h1>
-        <a href="notifications.php?country=<?php echo urlencode($country_name); ?>" class="btn btn-info">Информация</a>
-    </div>
+    <h1 class="text-center display-4 mb-4"><?php echo htmlspecialchars($country['name']); ?></h1>
     <div class="text-center mb-4">
         <p>Количество монет: <span id="money"><?php echo $country['money']; ?></span></p>
         <p>Количество ядерных ракет: <span id="nuclear_missiles"><?php echo $country['nuclear_missiles']; ?></span></p>
@@ -95,7 +98,7 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
                 <h3>Банк</h3>
                 <div class="form-group">
                     <label for="loan_amount">Взять кредит:</label>
-                    <select id="loan_amount" name="loan_amount" class="form-control" <?php echo !$can_take_loan ? 'disabled' : ''; ?>>
+                    <select id="loan_amount" name="loan_amount" class="form-control">
                         <option value="0">Не брать кредит</option>
                         <option value="100">100 монет</option>
                         <option value="200">200 монет</option>
@@ -103,10 +106,7 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
                         <option value="450">450 монет</option>
                     </select>
                 </div>
-                <div class="text-center mt-5">
-                    <button type="submit" class="btn btn-success btn-lg">Готов</button>
-                </div>
-            </form>
+
         </div>
         <div class="col-md-6">
             <h3>Другие страны</h3>
@@ -134,6 +134,30 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
             <?php endforeach; ?>
         </div>
     </div>
+    <div class="text-center mt-5">
+        <button type="submit" class="btn btn-success btn-lg" id="readyButton">Готов</button>
+    </div>
+    </form>
+
+    <div class="mt-5">
+        <h3>Уведомления</h3>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notifications" aria-expanded="false" aria-controls="notifications">
+            Показать/Скрыть уведомления
+        </button>
+        <div class="collapse mt-3" id="notifications">
+            <div class="card card-body">
+                <?php if (empty($notifications)): ?>
+                    <p>Уведомлений нет.</p>
+                <?php else: ?>
+                    <ul>
+                        <?php foreach ($notifications as $notification): ?>
+                            <li><?php echo htmlspecialchars($notification); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>
@@ -141,84 +165,76 @@ $can_take_loan = $country['money'] >= 0 && count($country['cities']) > 0;
     $(document).ready(function() {
         var initialMoney = <?php echo $country['money']; ?>;
         var initialNuclearMissiles = <?php echo $country['nuclear_missiles']; ?>;
-        var nuclearTechnology = <?php echo $country['nuclear_technology'] ? 'true' : 'false'; ?>;
 
         function updatePreview() {
             var money = initialMoney;
             var nuclear_missiles = initialNuclearMissiles;
-
-            // Обновление предварительного просмотра для ядерных ракет
-            var build_nuclear_missile = parseInt($('#build_nuclear_missile').val());
-            if (money >= build_nuclear_missile * 150) {
-                nuclear_missiles += build_nuclear_missile;
-                money -= build_nuclear_missile * 150;
-            }
-
-            // Обновление предварительного просмотра для ядерной технологии
-            if ($('#build_nuclear_technology').is(':checked')) {
-                money -= 450;
-            }
 
             // Обновление предварительного просмотра для вложений в экологию
             if ($('#invest_in_ecology').is(':checked')) {
                 money -= 50;
             }
 
-            // Обновление предварительного просмотра для улучшений городов
+            $('input[name="build_shield[]"]:checked').each(function() {
+                money -= 300;
+            });
+
             $('input[name="improve_city[]"]:checked').each(function() {
                 money -= 300;
             });
 
-            // Обновление предварительного просмотра для постройки щитов
-            $('input[name="build_shield[]"]:checked').each(function() {
-                money -= 300;
-            });
+            // Обновление предварительного просмотра для изучения ядерной технологии
+            if ($('#build_nuclear_technology').is(':checked')) {
+                money -= 450;
+            }
 
             // Обновление предварительного просмотра для кредитов
             var loan_amount = parseInt($('#loan_amount').val()) || 0;
             money += loan_amount;
 
-            // Динамическое обновление количества ракет
+            // Динамическое обновление количества ракет при запуске
+            $('input[name^="launch_missiles"]').each(function() {
+                $(this).prop('disabled', false); // Сначала разблокируем все
+            });
+
             $('input[name^="launch_missiles"]:checked').each(function() {
                 nuclear_missiles--;
+            });
+
+            if (nuclear_missiles < 0) {
+                nuclear_missiles = 0;
+            }
+
+            $('input[name^="launch_missiles"]').each(function() {
+                if (!$(this).is(':checked') && nuclear_missiles <= 0) {
+                    $(this).prop('disabled', true);
+                }
             });
 
             $('#money').text(money);
             $('#nuclear_missiles').text(nuclear_missiles);
 
-            // Блокировка действий при недостатке денег
-            $('input[type="checkbox"], select').each(function() {
-                if ($(this).attr('name') === 'build_nuclear_missile' || $(this).attr('name') === 'loan_amount') {
-                    return;
-                }
-
-                var cost = 0;
-                if ($(this).attr('name') === 'build_nuclear_technology') {
-                    cost = 450;
-                } else if ($(this).attr('name') === 'invest_in_ecology') {
-                    cost = 50;
-                } else if ($(this).attr('name') === 'improve_city[]' || $(this).attr('name') === 'build_shield[]') {
-                    cost = 300;
-                }
-
-                var isNuclearRequired = $(this).attr('name') === 'build_shield[]';
-                var hasNuclearTechnology = nuclearTechnology;
-
-                $(this).prop('disabled', $(this).is(':checked') ? false : (money < cost || (isNuclearRequired && !hasNuclearTechnology)));
-            });
-
             // Обновление доступности кнопки "Готов"
-            $('button[type="submit"]').prop('disabled', money < 0);
+            $('#readyButton').prop('disabled', money < 0);
 
-            // Блокировка запуска ракет при недостатке ракет
-            $('input[name^="launch_missiles"]').each(function() {
-                $(this).prop('disabled', nuclear_missiles <= 0 || (!$(this).is(':checked') && nuclear_missiles <= 0));
-            });
+            // Проверка и блокировка чекбоксов при отрицательном балансе
+            if (money < 0) {
+                $('input[type="checkbox"]:checked').each(function() {
+                    if (!$(this).data('initiallyChecked')) {
+                        $(this).prop('checked', false);
+                    }
+                });
+                updatePreview();
+            }
         }
 
         $('input, select').on('change', updatePreview);
+        $('input[type="checkbox"]').each(function() {
+            $(this).data('initiallyChecked', $(this).is(':checked'));
+        });
         updatePreview();
     });
 </script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

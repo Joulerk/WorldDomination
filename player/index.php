@@ -4,7 +4,31 @@ include '../includes/functions.php';
 
 $game_data = loadGameData();
 if (!$game_data) {
-    die('Игра еще не началась.');
+    echo '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра не началась</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/styles.css" rel="stylesheet">
+</head>
+<body>';
+    include '../includes/header.php';
+    echo '
+    <div class="container mt-5">
+        <div class="alert alert-warning text-center" role="alert">
+            <h4 class="alert-heading">Игра еще не началась</h4>
+            <p>Пожалуйста, подождите, пока администратор начнет игру.</p>
+        </div>
+    </div>';
+    include '../includes/footer.php';
+    echo '
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>';
+    exit();
 }
 
 $error = '';

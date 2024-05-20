@@ -13,71 +13,94 @@ if ($game_data['current_round'] > 7) {
 }
 
 $actions_data = loadActionsData();
-$notifications_data = json_decode(file_get_contents('../data/notifications.json'), true);
+$notifications_data = json_decode(file_get_contents('../data/notifications.json'), true) ?: [];
 
 // Обработка действий игроков
 foreach ($game_data['countries'] as &$country) {
-    if (isset($actions_data[$country['name']])) {
-        $actions = $actions_data[$country['name']];
-        $notifications = [];
+    $country_name = $country['name'];
+    $notifications = [];
+    $actions = $actions_data[$country_name] ?? null;
 
+    if ($actions) {
         // Обработка постройки ядерной технологии
-        if (isset($actions['build_nuclear_technology']) && $actions['build_nuclear_technology']) {
+        if (!empty($actions['build_nuclear_technology'])) {
             $country['nuclear_technology'] = true;
             $country['money'] -= 450;
-            $notifications[] = "Построена ядерная технология (-450 монет)";
+            $game_data['global_ecology'] -= 5;
+            $notifications[] = "Построена ядерная технология (-450 монет, -5% экологии)";
         }
 
         // Обработка постройки ядерных ракет
-        if (isset($actions['build_nuclear_missile']) && $actions['build_nuclear_missile'] > 0) {
-            $country['nuclear_missiles'] += $actions['build_nuclear_missile'];
-            $country['money'] -= $actions['build_nuclear_missile'] * 150;
-            $notifications[] = "Построено ядерных ракет: {$actions['build_nuclear_missile']} (-" . ($actions['build_nuclear_missile'] * 150) . " монет)";
+        if (!empty($actions['build_nuclear_missile'])) {
+            $num_missiles = (int)$actions['build_nuclear_missile'];
+            $country['nuclear_missiles'] += $num_missiles;
+            $country['money'] -= $num_missiles * 150;
+            $game_data['global_ecology'] -= $num_missiles * 2.5;
+            $notifications[] = "Построено ядерных ракет: {$num_missiles} (-" . ($num_missiles * 150) . " монет, -" . ($num_missiles * 2.5) . "% экологии)";
         }
 
         // Обработка вложений в экологию
-        if (isset($actions['invest_in_ecology']) && $actions['invest_in_ecology']) {
+        if (!empty($actions['invest_in_ecology'])) {
             $game_data['global_ecology'] += 5;
             $country['money'] -= 50;
-            $notifications[] = "Вложено в экологию (-50 монет)";
+            $notifications[] = "Вложено в экологию (-50 монет, +5% экологии)";
         }
 
         // Обработка улучшения городов
-        if (isset($actions['improve_city'])) {
+        if (!empty($actions['improve_city'])) {
             foreach ($actions['improve_city'] as $city_index) {
-                $country['cities'][$city_index]['development'] += 15;
+                $city = &$country['cities'][$city_index];
+                $city['development'] += 15;
                 $country['money'] -= 300;
-                $notifications[] = "Улучшено развитие города: " . $country['cities'][$city_index]['name'] . " (+15% развития, -300 монет)";
+                $notifications[] = "Улучшено развитие города: " . $city['name'] . " (+15% развития, -300 монет)";
             }
         }
 
         // Обработка постройки щитов
-        if (isset($actions['build_shield'])) {
+        if (!empty($actions['build_shield'])) {
             foreach ($actions['build_shield'] as $city_index) {
-                $country['cities'][$city_index]['shield'] = true;
+                $city = &$country['cities'][$city_index];
+                $city['shield'] = true;
                 $country['money'] -= 300;
-                $notifications[] = "Построен щит в городе: " . $country['cities'][$city_index]['name'] . " (-300 монет)";
+                $notifications[] = "Построен щит в городе: " . $city['name'] . " (-300 монет)";
             }
         }
 
         // Обработка запуска ядерных ракет
-        if (isset($actions['launch_missiles'])) {
-            foreach ($actions['launch_missiles'] as $target_country_name => $target_city_indices) {
-                foreach ($target_city_indices as $target_city_index) {
-                    foreach ($game_data['countries'] as &$target_country) {
-                        if ($target_country['name'] === $target_country_name) {
-                            if ($target_country['cities'][$target_city_index]['shield']) {
-                                // Если есть щит, щит уничтожается
-                                $target_country['cities'][$target_city_index]['shield'] = false;
-                                $notifications[] = "Щит в городе: " . $target_country['cities'][$target_city_index]['name'] . " страны " . $target_country_name . " был уничтожен";
-                            } else {
-                                // Иначе город уничтожается
-                                $target_country['cities'][$target_city_index]['alive'] = false;
-                                $notifications[] = "Город: " . $target_country['cities'][$target_city_index]['name'] . " страны " . $target_country_name . " был уничтожен";
+        $missile_targets = [];
+        if (!empty($actions['launch_missiles'])) {
+            foreach ($actions['launch_missiles'] as $launch) {
+                $target_country_name = htmlspecialchars($launch['target_country']);
+                $target_city_index = (int)$launch['target_city_index'];
+                $missile_targets[$target_country_name][$target_city_index][] = $country_name;
+            }
+        }
+
+        foreach ($missile_targets as $target_country_name => $target_cities) {
+            foreach ($target_cities as $target_city_index => $launching_countries) {
+                foreach ($game_data['countries'] as &$target_country) {
+                    if ($target_country['name'] === $target_country_name) {
+                        $city = &$target_country['cities'][$target_city_index];
+                        $missile_count = count($launching_countries);
+
+                        if ($city['shield'] && $missile_count == 1) {
+                            $city['shield'] = false;
+                            $notifications[] = "Щит в городе: " . $city['name'] . " страны " . $target_country_name . " был уничтожен одной ракетой";
+                        } else {
+                            $city['alive'] = false;
+                            $city['development'] = 0;
+                            $notifications[] = "Город: " . $city['name'] . " страны " . $target_country_name . " был уничтожен";
+                        }
+
+                        foreach ($launching_countries as $launching_country_name) {
+                            foreach ($game_data['countries'] as &$lc) {
+                                if ($lc['name'] === $launching_country_name) {
+                                    $lc['nuclear_missiles'] -= 1;
+                                    $game_data['global_ecology'] -= 5;
+                                    $notifications[] = "Запущена ядерная ракета по городу: " . $city['name'] . " страны " . $target_country_name . " (-5% экологии)";
+                                    break;
+                                }
                             }
-                            $country['nuclear_missiles'] -= 1;
-                            $notifications[] = "Запущена ядерная ракета по городу: " . $target_country['cities'][$target_city_index]['name'] . " страны " . $target_country_name;
-                            break;
                         }
                     }
                 }
@@ -85,8 +108,8 @@ foreach ($game_data['countries'] as &$country) {
         }
 
         // Обработка кредита
-        if (isset($actions['loan_amount']) && $actions['loan_amount'] > 0) {
-            $loan_amount = $actions['loan_amount'];
+        if (!empty($actions['loan_amount'])) {
+            $loan_amount = (int)$actions['loan_amount'];
             $country['money'] += $loan_amount;
             $country['loan'] = $loan_amount;
             $notifications[] = "Взят кредит: {$loan_amount} монет";
@@ -100,24 +123,41 @@ foreach ($game_data['countries'] as &$country) {
     }
 
     // Возврат кредита с процентами
-    if (isset($country['loan']) && $country['loan'] > 0) {
-        $country['money'] -= $country['loan'] * 1.25;
-        $notifications[] = "Возвращен кредит с процентами: -" . ($country['loan'] * 1.25) . " монет";
+    if (!empty($country['loan'])) {
+        $loan_payment = $country['loan'] * 1.25;
+        $country['money'] -= $loan_payment;
+        $notifications_data[$country['name']][] = "Возвращен кредит с процентами: -{$loan_payment} монет";
         unset($country['loan']);
     }
 
     // Расчет заработка
     $total_development = 0;
+    $city_count = 0;
     foreach ($country['cities'] as $city) {
-        $total_development += $city['development'];
+        if ($city['alive']) {
+            $total_development += $city['development'];
+            $city_count++;
+        }
     }
-    $average_development = $total_development / count($country['cities']);
+    $average_development = $city_count ? $total_development / $city_count : 0;
     $country['development'] = $average_development;
 
     $earnings = ($average_development / 5) * 150;
     $earnings = $earnings * ($game_data['global_ecology'] / 100);
     $country['money'] += $earnings;
-    $notifications[] = "Заработано: {$earnings} монет на основе развития и экологии";
+    $notifications_data[$country['name']][] = "Заработано: {$earnings} монет на основе развития и экологии";
+
+    // Уменьшение развития за уничтоженные города
+    foreach ($country['cities'] as $city) {
+        if (!$city['alive']) {
+            $country['development'] -= 25;
+        }
+    }
+
+    // Если развитие страны меньше 0, установить его на 0
+    if ($country['development'] < 0) {
+        $country['development'] = 0;
+    }
 }
 
 // Увеличение номера раунда

@@ -5,16 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/manage_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/manage_round.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/process_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/process_round.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/actions.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/actions.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/game_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/game_data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/notifications.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/notifications.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/footer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/header.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player/country.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/country.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/save_actions.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/save_actions.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +98,7 @@
       <workItem from="1716066232266" duration="91000" />
       <workItem from="1716066380469" duration="6000" />
       <workItem from="1716066394498" duration="10508000" />
-      <workItem from="1716216522765" duration="4689000" />
+      <workItem from="1716216522765" duration="13944000" />
     </task>
     <servers />
   </component>

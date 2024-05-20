@@ -14,7 +14,7 @@ World Domination Game is a PHP-based strategy game where players control countri
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Joulerk/world-domination-game.git
+    git clone https://github.com/Joulerk/WorldDomination.git
     ```
 
 2. Navigate to the project directory:
@@ -93,7 +93,7 @@ If you have any questions or feedback, feel free to open an issue or contact the
 
 1. Клонируйте репозиторий:
     ```bash
-    git clone https://github.com/Joulerk/world-domination-game.git
+    git clone https://github.com/Joulerk/WorldDomination.git
     ```
 
 2. Перейдите в директорию проекта:

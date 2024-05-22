@@ -77,13 +77,6 @@
                                     <label>Развитие страны (%)</label>
                                     <input type="number" name="countries[<?php echo $country_index; ?>][development]" class="form-control" value="<?php echo htmlspecialchars($country['development']); ?>" readonly>
                                 </div>
-                                <div class="form-group">
-                                    <label>Готовность к следующему раунду</label>
-                                    <select name="countries[<?php echo $country_index; ?>][ready]" class="form-control">
-                                        <option value="1" <?php echo $country['ready'] ? 'selected' : ''; ?>>Готов</option>
-                                        <option value="0" <?php echo !$country['ready'] ? 'selected' : ''; ?>>Не готов</option>
-                                    </select>
-                                </div>
                                 <h6>Города:</h6>
                                 <div class="row">
                                     <?php foreach ($country['cities'] as $city_index => $city): ?>

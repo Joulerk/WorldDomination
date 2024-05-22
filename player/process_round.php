@@ -12,12 +12,6 @@ if (!$game_data) {
     die('Игра еще не началась.');
 }
 
-// Проверка текущего раунда
-if ($game_data['current_round'] > 7) {
-    header('Location: manage_round.php?room=' . urlencode($room_name));
-    exit();
-}
-
 $actions_data = loadActionsData($room_name);
 $notifications_data = json_decode(file_get_contents("../data/$room_name/notifications.json"), true) ?: [];
 
@@ -190,6 +184,12 @@ file_put_contents("../data/$room_name/notifications.json", json_encode($notifica
 
 // Очистка действий игроков
 file_put_contents("../data/$room_name/actions.json", json_encode([], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+// Запуск таймера на 15 минут после завершения 7-го раунда
+if ($game_data['current_round'] > 7) {
+    $delete_time = time() + 1 * 60; // Текущее время + 15 минут
+    file_put_contents("../data/$room_name/delete_time.txt", $delete_time);
+}
 
 header('Location: manage_round.php?room=' . urlencode($room_name));
 exit();

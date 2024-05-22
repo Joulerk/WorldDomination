@@ -26,6 +26,14 @@ if ($game_data['current_round'] <= 7) {
     $game_data['round_calculated'] = false;
     saveGameData($room_name, $game_data);
 }
+
+// Проверка времени удаления комнаты
+$delete_time_file = "../data/$room_name/delete_time.txt";
+$delete_time_remaining = null;
+if (file_exists($delete_time_file)) {
+    $delete_time = (int)file_get_contents($delete_time_file);
+    $delete_time_remaining = $delete_time - time();
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,10 +63,19 @@ if ($game_data['current_round'] <= 7) {
         </div>
     </div>
 
-    <form action="process_round.php" method="POST">
-        <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
-        <button type="submit" class="btn btn-primary btn-lg btn-block" <?php echo !$all_ready ? 'disabled' : ''; ?>>Рассчитать раунд</button>
-    </form>
+    <?php if ($game_data['current_round'] > 7): ?>
+        <div class="alert alert-info">
+            Ожидайте удаления комнаты, игра закончена.
+            <?php if ($delete_time_remaining !== null): ?>
+                Комната будет удалена через: <?php echo gmdate("i:s", $delete_time_remaining); ?> минут.
+            <?php endif; ?>
+        </div>
+    <?php else: ?>
+        <form action="process_round.php" method="POST">
+            <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" <?php echo !$all_ready ? 'disabled' : ''; ?>>Рассчитать раунд</button>
+        </form>
+    <?php endif; ?>
 </div>
 
 <?php include '../includes/footer.php'; ?>

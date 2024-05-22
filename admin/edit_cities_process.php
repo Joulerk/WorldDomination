@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $game_data['countries'][$country_index]['nuclear_missiles'] = (int)$country_data['nuclear_missiles'];
         $game_data['countries'][$country_index]['nuclear_technology'] = (bool)$country_data['nuclear_technology'];
         $game_data['countries'][$country_index]['alive'] = (bool)$country_data['alive'];
-        $game_data['countries'][$country_index]['ready'] = (bool)$country_data['ready'];
 
         foreach ($country_data['cities'] as $city_index => $city_data) {
             $game_data['countries'][$country_index]['cities'][$city_index]['name'] = $city_data['name'];
@@ -20,6 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $game_data['countries'][$country_index]['cities'][$city_index]['shield'] = (bool)$city_data['shield'];
             $game_data['countries'][$country_index]['cities'][$city_index]['alive'] = (bool)$city_data['alive'];
         }
+    }
+
+    // Устанавливаем поле ready для всех стран в false, чтобы не сохранялось значение
+    foreach ($game_data['countries'] as &$country) {
+        $country['ready'] = false;
     }
 
     saveGameData($room_name, $game_data);

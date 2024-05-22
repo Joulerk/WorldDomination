@@ -5,9 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/player/create_room.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/player/join_room.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/game_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/game_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/create_game.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/create_game_process.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/edit_cities.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/edit_cities.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/edit_cities_process.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/edit_cities_process.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/edit_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/edit_settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/edit_settings_process.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/edit_settings_process.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/manage_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/manage_round.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/process_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/process_round.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/notifications.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/notifications.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player/country.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/country.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/results.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/results.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/save_actions.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/save_actions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/wait.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/wait.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +77,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PhpstormProjects\BG\player" />
       <recent name="D:\PhpstormProjects\BG\assets" />
       <recent name="D:\PhpstormProjects\BG\css" />
       <recent name="D:\PhpstormProjects\BG\assets\css" />
@@ -94,7 +111,7 @@
       <workItem from="1716066380469" duration="6000" />
       <workItem from="1716066394498" duration="10508000" />
       <workItem from="1716216522765" duration="19105000" />
-      <workItem from="1716389057672" duration="1466000" />
+      <workItem from="1716389057672" duration="10200000" />
     </task>
     <servers />
   </component>

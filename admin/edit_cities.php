@@ -13,8 +13,30 @@
 <div class="container mt-5">
     <h1 class="text-center display-4 mb-4">Редактирование городов</h1>
     <form action="edit_cities_process.php" method="POST">
-        <?php $game_data = loadGameData(); ?>
-        <?php if ($game_data): ?>
+        <div class="form-group">
+            <label for="room_name">Выберите комнату:</label>
+            <select id="room_name" name="room_name" class="form-control" required onchange="this.form.submit()">
+                <option value="">-- Выберите комнату --</option>
+                <?php $rooms = loadRoomsData(); ?>
+                <?php foreach ($rooms as $room): ?>
+                    <option value="<?php echo htmlspecialchars($room['name']); ?>" <?php echo (isset($_GET['room']) && $_GET['room'] === $room['name']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($room['name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </form>
+
+    <?php
+    if (isset($_GET['room'])) {
+        $room_name = $_GET['room'];
+        $game_data = loadGameData($room_name);
+    }
+    ?>
+
+    <?php if (isset($game_data) && $game_data): ?>
+        <form action="edit_cities_process.php" method="POST">
+            <input type="hidden" name="room_name" value="<?php echo htmlspecialchars($room_name); ?>">
             <div class="row">
                 <?php foreach ($game_data['countries'] as $country_index => $country): ?>
                     <div class="col-md-6 mb-3">
@@ -98,17 +120,17 @@
                 <?php endforeach; ?>
             </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">Сохранить изменения</button>
-        <?php else: ?>
-            <div class="alert alert-warning">
-                <p>Игра еще не началась. Пожалуйста, создайте новую игру.</p>
-            </div>
-        <?php endif; ?>
-    </form>
+        </form>
+    <?php else: ?>
+        <div class="alert alert-warning">
+            <p>Пожалуйста, выберите комнату для редактирования.</p>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php include '../includes/footer.php'; ?>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

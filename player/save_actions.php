@@ -1,7 +1,9 @@
 <?php
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
+session_start();
+$room_name = $_POST['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
 }
@@ -68,15 +70,15 @@ if (isset($actions['loan_amount'])) {
     $country['money'] += $actions['loan_amount'];
 }
 
-$actions_data = loadActionsData();
+$actions_data = loadActionsData($room_name);
 $actions_data[$country_name] = $actions;
-saveActionsData($actions_data);
+saveActionsData($room_name, $actions_data);
 
 // Обновление статуса готовности страны в game_data.json
 $country['ready'] = true;
 $game_data['countries'][$country_index] = $country;
-saveGameData($game_data);
+saveGameData($room_name, $game_data);
 
-header('Location: wait.php?country=' . urlencode($country_name));
+header('Location: wait.php?country=' . urlencode($country_name) . '&room=' . urlencode($room_name));
 exit();
 ?>

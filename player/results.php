@@ -2,7 +2,8 @@
 session_start();
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
+$room_name = $_GET['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
 }
@@ -25,7 +26,7 @@ $current_round = $game_data['current_round'];
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Итоги раунда <?php echo $current_round-1; ?></h1>
+    <h1 class="text-center display-4 mb-4">Итоги раунда <?php echo $current_round - 1; ?></h1>
     <div class="card shadow-sm mb-5">
         <div class="card-body">
             <h3 class="card-title">Мировая экология: <?php echo $global_ecology; ?>%</h3>

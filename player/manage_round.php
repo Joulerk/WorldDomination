@@ -2,24 +2,37 @@
 session_start();
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
+if (!isset($_GET['room'])) {
+    die('Комната не указана.');
+}
+
+$room_name = $_GET['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
+}
+
+// Проверка готовности всех стран
+$all_ready = true;
+foreach ($game_data['countries'] as $country) {
+    if (!$country['ready']) {
+        $all_ready = false;
+        break;
+    }
 }
 
 // Сброс метки завершенного пересчета раунда, если текущий раунд меньше 7
 if ($game_data['current_round'] <= 7) {
     $game_data['round_calculated'] = false;
-    saveGameData($game_data);
+    saveGameData($room_name, $game_data);
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Управление раундом</title>
+    <title>Управление раундом - <?php echo htmlspecialchars($room_name); ?></title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
 </head>
@@ -27,7 +40,7 @@ if ($game_data['current_round'] <= 7) {
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Управление раундом</h1>
+    <h1 class="text-center display-4 mb-4">Управление раундом - <?php echo htmlspecialchars($room_name); ?></h1>
     <div class="card shadow-sm mb-5">
         <div class="card-body">
             <h3 class="card-title">Статус готовности стран</h3>
@@ -43,7 +56,8 @@ if ($game_data['current_round'] <= 7) {
     </div>
 
     <form action="process_round.php" method="POST">
-        <button type="submit" class="btn btn-primary btn-lg btn-block" <?php echo $game_data['current_round'] > 7 ? 'disabled' : ''; ?>>Рассчитать раунд</button>
+        <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
+        <button type="submit" class="btn btn-primary btn-lg btn-block" <?php echo !$all_ready ? 'disabled' : ''; ?>>Рассчитать раунд</button>
     </form>
 </div>
 

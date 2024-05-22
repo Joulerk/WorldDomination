@@ -1,46 +1,78 @@
 <?php
 
-function loadGameData() {
-    if (file_exists('../data/game_data.json')) {
-        $json_data = file_get_contents('../data/game_data.json');
+function loadGameData($room_name) {
+    $file_path = "../data/$room_name/game_data.json";
+    if (file_exists($file_path)) {
+        $json_data = file_get_contents($file_path);
         return json_decode($json_data, true);
     } else {
         return null;
     }
 }
 
-function saveGameData($data) {
+function saveGameData($room_name, $data) {
+    $file_path = "../data/$room_name/game_data.json";
+    if (!file_exists(dirname($file_path))) {
+        mkdir(dirname($file_path), 0777, true);
+    }
     $json_data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    file_put_contents('../data/game_data.json', $json_data);
+    file_put_contents($file_path, $json_data);
 }
 
-function loadActionsData() {
-    if (file_exists('../data/actions.json')) {
-        $json_data = file_get_contents('../data/actions.json');
+function loadActionsData($room_name) {
+    $file_path = "../data/$room_name/actions.json";
+    if (file_exists($file_path)) {
+        $json_data = file_get_contents($file_path);
         return json_decode($json_data, true);
     } else {
         return [];
     }
 }
 
-function saveActionsData($data) {
+function saveActionsData($room_name, $data) {
+    $file_path = "../data/$room_name/actions.json";
+    if (!file_exists(dirname($file_path))) {
+        mkdir(dirname($file_path), 0777, true);
+    }
     $json_data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    file_put_contents('../data/actions.json', $json_data);
+    file_put_contents($file_path, $json_data);
 }
 
-function loadSettings() {
-    if (file_exists('../data/settings.json')) {
-        $json_data = file_get_contents('../data/settings.json');
+function loadSettings($room_name) {
+    $file_path = "../data/$room_name/settings.json";
+    if (file_exists($file_path)) {
+        $json_data = file_get_contents($file_path);
         return json_decode($json_data, true);
     } else {
         return null;
     }
 }
 
-function saveSettings($data) {
+function saveSettings($room_name, $data) {
+    $file_path = "../data/$room_name/settings.json";
+    if (!file_exists(dirname($file_path))) {
+        mkdir(dirname($file_path), 0777, true);
+    }
     $json_data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    file_put_contents('../data/settings.json', $json_data);
+    file_put_contents($file_path, $json_data);
 }
+
+function loadRoomsData() {
+    $file_path = "../data/rooms.json";
+    if (file_exists($file_path)) {
+        $json_data = file_get_contents($file_path);
+        return json_decode($json_data, true);
+    } else {
+        return [];
+    }
+}
+
+function saveRoomsData($data) {
+    $file_path = "../data/rooms.json";
+    $json_data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    file_put_contents($file_path, $json_data);
+}
+
 function loadDefaultSettings() {
     return [
         "nuclear_technology_cost" => 450,
@@ -58,5 +90,13 @@ function loadDefaultSettings() {
     ];
 }
 
-
+function addCountryPassword(&$game_data, $country_name, $password) {
+    foreach ($game_data['countries'] as &$country) {
+        if ($country['name'] === $country_name) {
+            $country['password'] = $password;
+            return true;
+        }
+    }
+    return false;
+}
 ?>

@@ -2,7 +2,8 @@
 session_start();
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
+$room_name = $_SESSION['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
 }
@@ -60,12 +61,13 @@ $round_calculated = isset($game_data['round_calculated']) && $game_data['round_c
             </div>
         </div>
 
-        <a href="results.php" class="btn btn-primary btn-lg mb-3">Просмотреть итоги</a>
+        <a href="results.php?room=<?php echo urlencode($room_name); ?>" class="btn btn-primary btn-lg mb-3">Просмотреть итоги</a>
 
         <?php if ($all_ready): ?>
             <?php if ($round_calculated): ?>
                 <form action="country.php" method="GET">
                     <input type="hidden" name="country" value="<?php echo htmlspecialchars($country_name); ?>">
+                    <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
                     <button type="submit" class="btn btn-success btn-lg">Перейти к следующему раунду</button>
                 </form>
             <?php else: ?>

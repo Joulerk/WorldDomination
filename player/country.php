@@ -2,12 +2,13 @@
 require_once '../includes/functions.php';
 
 session_start();
-if (!isset($_SESSION['country_logged_in']) || $_GET['country'] !== $_SESSION['country_logged_in']) {
+if (!isset($_SESSION['country_logged_in']) || $_GET['country'] !== $_SESSION['country_logged_in'] || $_GET['room'] !== $_SESSION['room']) {
     header('Location: index.php');
     exit();
 }
 
-$game_data = loadGameData();
+$room_name = $_GET['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
 }
@@ -26,10 +27,14 @@ if (!$country) {
     die('Страна не найдена.');
 }
 
-$notifications_data = json_decode(file_get_contents('../data/notifications.json'), true);
-$notifications = $notifications_data[$country_name] ?? [];
+$notifications_path = "../data/$room_name/notifications.json";
+if (file_exists($notifications_path)) {
+    $notifications_data = json_decode(file_get_contents($notifications_path), true);
+    $notifications = $notifications_data[$country_name] ?? [];
+} else {
+    $notifications = [];
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +60,7 @@ $notifications = $notifications_data[$country_name] ?? [];
             <h3>Города</h3>
             <form id="actionsForm" action="save_actions.php" method="POST">
                 <input type="hidden" name="country" value="<?php echo htmlspecialchars($country_name); ?>">
+                <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
                 <?php foreach ($country['cities'] as $city_index => $city): ?>
                     <div class="card mb-3 shadow-sm">
                         <div class="card-body">
@@ -256,7 +262,6 @@ $notifications = $notifications_data[$country_name] ?? [];
         disableDestroyedCities(); // Вызов функции блокировки уничтоженных городов
     });
 </script>
-</script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,19 +1,25 @@
 <?php
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
+session_start();
+if (!isset($_SESSION['room'])) {
+    die('Комната не найдена.');
+}
+
+$room_name = $_SESSION['room'];
+$game_data = loadGameData($room_name);
 if (!$game_data) {
     die('Игра еще не началась.');
 }
 
 // Проверка текущего раунда
 if ($game_data['current_round'] > 7) {
-    header('Location: manage_round.php');
+    header('Location: manage_round.php?room=' . urlencode($room_name));
     exit();
 }
 
-$actions_data = loadActionsData();
-$notifications_data = json_decode(file_get_contents('../data/notifications.json'), true) ?: [];
+$actions_data = loadActionsData($room_name);
+$notifications_data = json_decode(file_get_contents("../data/$room_name/notifications.json"), true) ?: [];
 
 function handleNuclearTechnology(&$country, &$notifications, &$global_ecology) {
     $country['nuclear_technology'] = true;
@@ -179,12 +185,12 @@ $game_data['current_round'] += 1;
 $game_data['round_calculated'] = true; // Метка для завершенного пересчета раунда
 
 // Сохранение данных
-saveGameData($game_data);
-file_put_contents('../data/notifications.json', json_encode($notifications_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+saveGameData($room_name, $game_data);
+file_put_contents("../data/$room_name/notifications.json", json_encode($notifications_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 // Очистка действий игроков
-file_put_contents('../data/actions.json', json_encode([], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents("../data/$room_name/actions.json", json_encode([], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-header('Location: manage_round.php');
+header('Location: manage_round.php?room=' . urlencode($room_name));
 exit();
 ?>

@@ -1,12 +1,10 @@
 <?php
 require_once '../includes/functions.php';
 
-$game_data = loadGameData();
-if (!$game_data) {
-    die('Игра еще не началась.');
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $room_name = $_POST['room_name'];
+    $game_data = loadGameData($room_name);
+
     foreach ($_POST['countries'] as $country_index => $country_data) {
         $game_data['countries'][$country_index]['name'] = $country_data['name'];
         $game_data['countries'][$country_index]['password'] = $country_data['password'];
@@ -24,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    saveGameData($game_data);
-    header('Location: edit_cities.php');
+    saveGameData($room_name, $game_data);
+    header("Location: edit_cities.php?room=" . urlencode($room_name));
     exit();
 }
 ?>

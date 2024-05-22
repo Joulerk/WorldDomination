@@ -188,6 +188,12 @@ $notifications = $notifications_data[$country_name] ?? [];
                 money -= 450;
             }
 
+            // Обновление предварительного просмотра для постройки ядерных ракет
+            var build_nuclear_missile = parseInt($('#build_nuclear_missile').val());
+            if (build_nuclear_missile) {
+                money -= build_nuclear_missile * 150;
+            }
+
             // Обновление предварительного просмотра для кредитов
             var loan_amount = parseInt($('#loan_amount').val()) || 0;
             money += loan_amount;
@@ -228,12 +234,28 @@ $notifications = $notifications_data[$country_name] ?? [];
             }
         }
 
+        function disableDestroyedCities() {
+            // Блокировка чекбоксов для уничтоженных городов
+            $('input[name^="launch_missiles"]').each(function() {
+                var targetCountry = $(this).attr('name').match(/\[(.*?)\]/)[1];
+                var targetCityIndex = parseInt($(this).val());
+                var targetCountryData = <?php echo json_encode($game_data['countries']); ?>;
+                var isCityAlive = targetCountryData.find(country => country.name === targetCountry).cities[targetCityIndex].alive;
+
+                if (!isCityAlive) {
+                    $(this).prop('disabled', true);
+                }
+            });
+        }
+
         $('input, select').on('change', updatePreview);
         $('input[type="checkbox"]').each(function() {
             $(this).data('initiallyChecked', $(this).is(':checked'));
         });
         updatePreview();
+        disableDestroyedCities(); // Вызов функции блокировки уничтоженных городов
     });
+</script>
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

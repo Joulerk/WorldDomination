@@ -5,9 +5,9 @@
         {
             "name": "США",
             "development": 18.75,
-            "money": 1206.25,
-            "nuclear_missiles": 0,
-            "nuclear_technology": false,
+            "money": 1206,
+            "nuclear_missiles": 2,
+            "nuclear_technology": true,
             "cities": [
                 {
                     "name": "Нью-Йорк",
@@ -42,7 +42,7 @@
             "name": "Китай",
             "development": 15,
             "money": 1360,
-            "nuclear_missiles": 0,
+            "nuclear_missiles": 2,
             "nuclear_technology": true,
             "cities": [
                 {

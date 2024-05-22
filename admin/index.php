@@ -22,6 +22,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         <link href="../assets/css/styles.css" rel="stylesheet">
     </head>
     <body>
+    <?php include '../includes/header.php'; ?>
     <div class="container mt-5">
         <h1 class="text-center display-4 mb-4">Админ-панель</h1>
         <div class="row justify-content-center">
@@ -44,6 +45,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             </div>
         </div>
     </div>
+    <?php include '../includes/footer.php'; ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

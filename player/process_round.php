@@ -187,7 +187,7 @@ file_put_contents("../data/$room_name/actions.json", json_encode([], JSON_PRETTY
 
 // Запуск таймера на 15 минут после завершения 7-го раунда
 if ($game_data['current_round'] > 7) {
-    $delete_time = time() + 1 * 60; // Текущее время + 15 минут
+    $delete_time = time() + 15 * 60; // Текущее время + 15 минут
     file_put_contents("../data/$room_name/delete_time.txt", $delete_time);
 }
 

@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="password"><i class="material-icons">lock</i> Пароль:</label>
+                    <label for="password"><i class="material-icons">lock</i> Пароль(пока что - всегда равен 1, но следите за новостями на бусти!):</label>
                     <input type="password" name="password" id="password" class="form-control" value="1" required>
                 </div>
                 <button type="submit" class="btn btn-success mt-3"><i class="material-icons">play_arrow</i> Начать игру</button>

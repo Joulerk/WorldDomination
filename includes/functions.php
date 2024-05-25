@@ -109,4 +109,47 @@ function addRoomPassword(&$rooms_data, $room_name, $password) {
     }
     return false;
 }
+
+function loadRoomDeleteTime($room_name) {
+    $file_path = "../data/$room_name/delete_time.txt";
+    if (file_exists($file_path)) {
+        return (int)file_get_contents($file_path);
+    } else {
+        return null;
+    }
+}
+
+function setRoomDeleteTime($room_name, $delete_time) {
+    $file_path = "../data/$room_name/delete_time.txt";
+    if (!file_exists(dirname($file_path))) {
+        mkdir(dirname($file_path), 0777, true);
+    }
+    file_put_contents($file_path, $delete_time);
+}
+
+function deleteExpiredRooms() {
+    $rooms_data = loadRoomsData();
+    $current_time = time();
+    $rooms_to_delete = [];
+
+    foreach ($rooms_data as $room) {
+        $room_name = $room['name'];
+        $delete_time = loadRoomDeleteTime($room_name);
+        if ($delete_time && $delete_time <= $current_time) {
+            $rooms_to_delete[] = $room_name;
+        }
+    }
+
+    foreach ($rooms_to_delete as $room_name) {
+        // Удаляем файлы комнаты
+        array_map('unlink', glob("../data/$room_name/*"));
+        rmdir("../data/$room_name");
+
+        // Удаляем комнату из rooms.json
+        $rooms_data = array_filter($rooms_data, fn($r) => $r['name'] !== $room_name);
+
+        // Перезаписываем rooms.json
+        saveRoomsData(array_values($rooms_data));
+    }
+}
 ?>

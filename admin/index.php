@@ -2,14 +2,19 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_password = '_lOlipop123'; // Пароль администратора
+    $password_file = __DIR__ . '/pass.txt'; // Путь к файлу пароля
+    if (file_exists($password_file)) {
+        $admin_password = trim(file_get_contents($password_file)); // Читаем и обрезаем пробелы
+    } else {
+        die('Файл пароля не найден.');
+    }
+
     if ($_POST['password'] === $admin_password) {
         $_SESSION['admin_logged_in'] = true;
     } else {
         $error = 'Неверный пароль';
     }
 }
-
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     ?>
 

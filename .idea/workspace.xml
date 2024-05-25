@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="Больше анимаций и оптимизаций!">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player/create_room.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/create_room.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player/join_room.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/join_room.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player/process_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/process_round.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +113,8 @@
       <workItem from="1716389057672" duration="13563000" />
       <workItem from="1716405642989" duration="149000" />
       <workItem from="1716648949851" duration="8925000" />
-      <workItem from="1716659889439" duration="10514000" />
+      <workItem from="1716659889439" duration="10924000" />
+      <workItem from="1716672884316" duration="313000" />
     </task>
     <task id="LOCAL-00001" summary="Больше анимаций и оптимизаций!">
       <option name="closed" value="true" />

@@ -75,7 +75,7 @@ I welcome contributions from the community. If you'd like to contribute, please 
 
 ## Contact
 
-If you have any questions or feedback, feel free to open an issue or contact the project maintainer at [madventcher@gmail.com](mailto:madventcher@gmail.com) or [lerk@joulerk.ru](mailto:lerk@joulerk.ru).
+If you have any questions or feedback, feel free to open an issue or contact the project maintainer at [lerk@joulerk.ru](mailto:lerk@joulerk.ru).
 
 
 # Игра "Мировое Господство"
@@ -155,4 +155,4 @@ If you have any questions or feedback, feel free to open an issue or contact the
 
 ## Контакты
 
-Если у вас есть вопросы или отзывы, не стесняйтесь открывать issue или связаться с администратором проекта по электронной почте [madventcher@gmail.com](mailto:madventcher@gmail.com) или [lerk@joulerk.ru](mailto:lerk@joulerk.ru).
+Если у вас есть вопросы или отзывы, не стесняйтесь открывать issue или связаться с администратором проекта по электронной почте [lerk@joulerk.ru](mailto:lerk@joulerk.ru).

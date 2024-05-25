@@ -29,3 +29,86 @@ footer.footer {
     font-size: 1.5rem;
     font-weight: 600;
 }
+
+/* Стили из player/country.php */
+.card-header-custom {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.card-title-custom {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.custom-checkbox {
+    transform: scale(1.2);
+    margin-right: 10px;
+}
+
+.notifications-card {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Сетки */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.countries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.city-card, .country-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.city-card:hover, .country-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animated.fadeIn {
+    animation-name: fadeIn;
+}
+
+.animated.bounce {
+    animation-name: bounce;
+}
+
+/* Иконки */
+.fas {
+    margin-left: 5px;
+}

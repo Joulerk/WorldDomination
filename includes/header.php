@@ -23,6 +23,11 @@
                         <i class="material-icons">person</i> Игрок
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://boosty.to/lerk" target="_blank">
+                        <i class="material-icons">attach_money</i> Boosty
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

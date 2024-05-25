@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="https://github.com/Joulerk/WorldDomination">
+        <a class="navbar-brand" href="https://github.com/Joulerk/WorldDomination" target="_blank">
             <i class="material-icons">public</i> Мировое Господство | ЛЕРК
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

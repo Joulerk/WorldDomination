@@ -141,37 +141,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Создать комнату</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Создать комнату</h1>
-    <div class="card shadow-sm mt-5">
+    <h1 class="text-center display-4 mb-4">Создать комнату <i class="material-icons">add_box</i></h1>
+    <div class="card shadow-sm mt-5 animated fadeIn">
         <div class="card-body">
             <?php if (isset($error)): ?>
-                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?> <i class="material-icons">error</i></div>
             <?php endif; ?>
             <form action="create_room.php" method="POST">
                 <div class="form-group">
-                    <label for="room_name">Название комнаты:</label>
+                    <label for="room_name"><i class="material-icons">meeting_room</i> Название комнаты:</label>
                     <input type="text" id="room_name" name="room_name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="num_countries">Количество стран (5-12):</label>
+                    <label for="num_countries"><i class="material-icons">public</i> Количество стран (5-12):</label>
                     <select id="num_countries" name="num_countries" class="form-control" required>
                         <?php for ($i = 5; $i <= 12; $i++): ?>
                             <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Создать комнату</button>
+                <button type="submit" class="btn btn-primary mt-3"><i class="material-icons">save</i> Создать комнату</button>
             </form>
         </div>
     </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>
-<script src="../assets/js/scripts.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

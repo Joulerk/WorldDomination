@@ -9,6 +9,9 @@ if (!$game_data) {
 }
 
 $countries = $game_data['countries'];
+usort($countries, function($a, $b) {
+    return $b['development'] - $a['development'];
+});
 $global_ecology = $game_data['global_ecology'];
 $current_round = $game_data['current_round'];
 ?>
@@ -20,33 +23,39 @@ $current_round = $game_data['current_round'];
     <title>Итоги раунда</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Итоги раунда <?php echo $current_round - 1; ?></h1>
-    <div class="card shadow-sm mb-5">
-        <div class="card-body">
-            <h3 class="card-title">Мировая экология: <?php echo $global_ecology; ?>%</h3>
+    <h1 class="text-center display-4 mb-4">Итоги раунда <?php echo $current_round - 1; ?> <i class="material-icons">assessment</i></h1>
+    <div class="card shadow-sm mb-5 animated fadeIn">
+        <div class="card-body text-center">
+            <h3 class="card-title"><i class="material-icons">eco</i> Мировая экология: <?php echo $global_ecology; ?>%</h3>
         </div>
     </div>
     <canvas id="resultsChart" width="400" height="200"></canvas>
-    <div class="card shadow-sm mt-5">
+    <div class="card shadow-sm mt-5 animated fadeIn">
         <div class="card-body">
-            <h3 class="card-title">Данные о странах</h3>
-            <table class="table table-bordered">
-                <thead>
+            <h3 class="card-title"><i class="material-icons">flag</i> Данные о странах</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
                 <tr>
                     <th>Страна</th>
                     <th>Развитие (%)</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($countries as $country): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($country['name']); ?></td>
+                <?php foreach ($countries as $index => $country): ?>
+                    <tr class="<?php echo $index === 0 ? 'table-success' : ''; ?>">
+                        <td>
+                            <?php echo htmlspecialchars($country['name']); ?>
+                            <?php if ($index === 0): ?>
+                                <i class="material-icons text-success">emoji_events</i>
+                            <?php endif; ?>
+                        </td>
                         <td><?php echo $country['development']; ?></td>
                     </tr>
                 <?php endforeach; ?>

@@ -4,17 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="">
+    <list default="true" id="a6a978c8-90ca-4820-a8a3-0dd3474893cc" name="Changes" comment="Больше анимаций и оптимизаций!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/edit_cities.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/edit_cities.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/login.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/footer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player/country.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/country.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player/create_room.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/create_room.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/join_room.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/join_room.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/manage_round.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/manage_round.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/results.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/results.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/save_actions.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/save_actions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player/wait.php" beforeDir="false" afterPath="$PROJECT_DIR$/player/wait.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="ComposerSettings">
     <execution />
@@ -30,6 +46,15 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {}
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Joulerk/WorldDomination.git",
+    "accountId": "0744765d-20fc-4f72-89a5-14224c5f38a1"
+  }
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -100,11 +125,24 @@
       <workItem from="1716216522765" duration="19105000" />
       <workItem from="1716389057672" duration="13563000" />
       <workItem from="1716405642989" duration="149000" />
-      <workItem from="1716648949851" duration="1794000" />
+      <workItem from="1716648949851" duration="5138000" />
     </task>
+    <task id="LOCAL-00001" summary="Больше анимаций и оптимизаций!">
+      <option name="closed" value="true" />
+      <created>1716650812066</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716650812066</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Больше анимаций и оптимизаций!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Больше анимаций и оптимизаций!" />
   </component>
 </project>

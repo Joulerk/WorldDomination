@@ -47,20 +47,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Выбор страны</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Выбор страны</h1>
-    <div class="card shadow-sm mt-5">
+    <h1 class="text-center display-4 mb-4">Выбор страны <i class="material-icons">public</i></h1>
+    <div class="card shadow-sm mt-5 animated fadeIn">
         <div class="card-body">
             <form action="join_room.php?room=<?php echo urlencode($room_name); ?>" method="POST">
                 <?php if (!empty($error)): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <div class="alert alert-danger"><?php echo $error; ?> <i class="material-icons">error</i></div>
                 <?php endif; ?>
                 <div class="form-group">
-                    <label for="country">Выберите страну:</label>
+                    <label for="country"><i class="material-icons">flag</i> Выберите страну:</label>
                     <select id="country" name="country" class="form-control" required>
                         <?php foreach ($room['countries'] as $country): ?>
                             <option value="<?php echo htmlspecialchars($country['name']); ?>"><?php echo htmlspecialchars($country['name']); ?></option>
@@ -68,13 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="password">Пароль:</label>
+                    <label for="password"><i class="material-icons">lock</i> Пароль:</label>
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-success mt-3">Начать игру</button>
+                <button type="submit" class="btn btn-success mt-3"><i class="material-icons">play_arrow</i> Начать игру</button>
             </form>
-            <a href="index.php" class="btn btn-secondary mt-3">Назад</a>
-            <a href="results.php?room=<?php echo urlencode($room_name); ?>" class="btn btn-info mt-3">Посмотреть итоги на данный момент</a>
+            <a href="index.php" class="btn btn-secondary mt-3"><i class="material-icons">arrow_back</i> Назад</a>
+            <a href="results.php?room=<?php echo urlencode($room_name); ?>" class="btn btn-info mt-3"><i class="material-icons">bar_chart</i> Посмотреть итоги на данный момент</a>
         </div>
     </div>
 </div>

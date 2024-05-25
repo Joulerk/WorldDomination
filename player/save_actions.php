@@ -60,7 +60,6 @@ if (isset($_POST['city_names'])) {
     }
 }
 
-
 if (isset($_POST['loan_amount']) && $_POST['loan_amount'] > 0) {
     $actions['loan_amount'] = (int)$_POST['loan_amount'];
 }
@@ -79,6 +78,7 @@ $country['ready'] = true;
 $game_data['countries'][$country_index] = $country;
 saveGameData($room_name, $game_data);
 
+// Перенаправление на страницу ожидания
 header('Location: wait.php?country=' . urlencode($country_name) . '&room=' . urlencode($room_name));
 exit();
 ?>

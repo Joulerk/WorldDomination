@@ -12,6 +12,24 @@ footer.footer {
     background-color: #f8f9fa;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    margin-right: 8px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link i {
+    margin-right: 5px;
+}
+
 .btn-lg {
     padding: 1rem 2rem;
 }
@@ -49,6 +67,12 @@ footer.footer {
 .notifications-card {
     max-height: 300px;
     overflow-y: auto;
+}
+
+.info-header {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 /* Сетки */
@@ -109,6 +133,7 @@ footer.footer {
 }
 
 /* Иконки */
-.fas {
+.material-icons {
+    vertical-align: middle;
     margin-left: 5px;
 }

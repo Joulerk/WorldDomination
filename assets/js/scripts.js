@@ -98,4 +98,3 @@ function loadScripts() {
 document.addEventListener("DOMContentLoaded", function() {
     loadScripts();
 });
-

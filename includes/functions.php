@@ -99,4 +99,14 @@ function addCountryPassword(&$game_data, $country_name, $password) {
     }
     return false;
 }
+
+function addRoomPassword(&$rooms_data, $room_name, $password) {
+    foreach ($rooms_data as &$room) {
+        if ($room['name'] === $room_name) {
+            $room['password'] = $password;
+            return true;
+        }
+    }
+    return false;
+}
 ?>

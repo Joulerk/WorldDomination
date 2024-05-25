@@ -34,8 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } elseif (isset($_POST['join_room'])) {
         $room_name = $_POST['room_name'];
-        header("Location: join_room.php?room=" . urlencode($room_name));
-        exit();
+        $room_password = $_POST['room_password'];
+
+        // Проверка пароля комнаты
+        foreach ($rooms_data as $room) {
+            if ($room['name'] === $room_name) {
+                if ($room['password'] === $room_password) {
+                    // Пароль верный, перенаправляем на страницу присоединения
+                    header("Location: join_room.php?room=" . urlencode($room_name));
+                    exit();
+                } else {
+                    $error = 'Неверный пароль комнаты';
+                }
+            }
+        }
     }
 }
 ?>
@@ -56,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="text-center display-4 mb-4">Присоединение к комнате <i class="material-icons">meeting_room</i></h1>
     <div class="card shadow-sm mt-5 animated fadeIn">
         <div class="card-body">
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger"><?php echo $error; ?> <i class="material-icons">error</i></div>
+            <?php endif; ?>
             <form action="index.php" method="POST">
                 <div class="form-group">
                     <label for="room_name"><i class="material-icons">meeting_room</i> Название комнаты:</label>
@@ -64,6 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="<?php echo htmlspecialchars($room['name']); ?>"><?php echo htmlspecialchars($room['name']); ?></option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="room_password"><i class="material-icons">lock</i> Пароль комнаты:</label>
+                    <input type="password" name="room_password" id="room_password" class="form-control" required>
                 </div>
                 <button type="submit" name="join_room" class="btn btn-success mt-3"><i class="material-icons">login</i> Присоединиться</button>
             </form>
@@ -94,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include '../includes/footer.php'; ?>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     <?php if (!empty($deletion_timers)): ?>
     <?php foreach ($deletion_timers as $room_name => $time_left): ?>

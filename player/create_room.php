@@ -5,6 +5,7 @@ require_once '../includes/functions.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $room_name = $_POST['room_name'];
     $num_countries = (int)$_POST['num_countries'];
+    $room_password = $_POST['room_password'];
 
     // Загружаем данные всех комнат
     $rooms_data = loadRoomsData();
@@ -124,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             saveSettings($room_name, ['default' => $default_settings]);
 
             // Обновляем данные комнат
-            $rooms_data[] = ["name" => $room_name, "countries" => $game_countries];
+            $rooms_data[] = ["name" => $room_name, "countries" => $game_countries, "password" => $room_password];
             saveRoomsData($rooms_data);
 
             header("Location: join_room.php?room=" . urlencode($room_name));
@@ -166,6 +167,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endfor; ?>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="room_password"><i class="material-icons">lock</i> Пароль комнаты:</label>
+                    <input type="password" id="room_password" name="room_password" class="form-control" required>
+                </div>
                 <button type="submit" class="btn btn-primary mt-3"><i class="material-icons">save</i> Создать комнату</button>
             </form>
         </div>
@@ -173,7 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <?php include '../includes/footer.php'; ?>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../assets/js/scripts.js"></script>
 </body>
 </html>

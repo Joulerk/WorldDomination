@@ -59,6 +59,9 @@ if (file_exists($notifications_path)) {
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
+    <div class="text-center mb-4">
+        <button type="submit" class="btn btn-success btn-lg animated bounce" id="readyButton" <?php echo $is_ready ? 'disabled' : ''; ?>>Готов <i class="material-icons">check</i></button>
+    </div>
     <div class="info-header text-center mb-4">
         <h1 class="display-4 mb-4"><?php echo htmlspecialchars($country['name']); ?> <i class="material-icons">flag</i></h1>
         <div class="row justify-content-center">
@@ -112,7 +115,7 @@ if (file_exists($notifications_path)) {
                                 </h5>
                             </div>
                             <div class="card-body">
-                                <p><i class="material-icons">trending_up</i> Развитие: <?php echo htmlspecialchars($city['development']); ?>%</p>
+                                <p><i class="material-icons">trending_up</i> Уровень жизни: <?php echo htmlspecialchars($city['development']); ?>%</p>
                                 <p><i class="material-icons">security</i> Щит: <?php echo $city['shield'] ? 'Да' : 'Нет'; ?></p>
                                 <p><i class="material-icons">favorite</i> Статус: <?php echo $city['alive'] ? '✔️' : '❌'; ?></p>
                                 <div class="form-group">
@@ -158,6 +161,25 @@ if (file_exists($notifications_path)) {
                     </select>
                 </div>
 
+                <div class="mt-5">
+                    <h3>Уведомления <i class="material-icons">notifications</i></h3>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notifications" aria-expanded="false" aria-controls="notifications">
+                        Показать/Скрыть уведомления <i class="material-icons">expand_more</i>
+                    </button>
+                    <div class="collapse mt-3 notifications-card" id="notifications">
+                        <div class="card card-body">
+                            <?php if (empty($notifications)): ?>
+                                <p>Уведомлений нет.</p>
+                            <?php else: ?>
+                                <ul>
+                                    <?php foreach ($notifications as $notification): ?>
+                                        <li><?php echo htmlspecialchars($notification); ?> <i class="material-icons">info</i></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
         </div>
         <div class="col-md-6">
             <h3>Другие страны <i class="material-icons">public</i></h3>
@@ -189,30 +211,7 @@ if (file_exists($notifications_path)) {
             </div>
         </div>
     </div>
-    <div class="text-center mt-5">
-        <button type="submit" class="btn btn-success btn-lg animated bounce" id="readyButton" <?php echo $is_ready ? 'disabled' : ''; ?>>Готов <i class="material-icons">check</i></button>
-    </div>
     </form>
-
-    <div class="mt-5">
-        <h3>Уведомления <i class="material-icons">notifications</i></h3>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#notifications" aria-expanded="false" aria-controls="notifications">
-            Показать/Скрыть уведомления <i class="material-icons">expand_more</i>
-        </button>
-        <div class="collapse mt-3 notifications-card" id="notifications">
-            <div class="card card-body">
-                <?php if (empty($notifications)): ?>
-                    <p>Уведомлений нет.</p>
-                <?php else: ?>
-                    <ul>
-                        <?php foreach ($notifications as $notification): ?>
-                            <li><?php echo htmlspecialchars($notification); ?> <i class="material-icons">info</i></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>

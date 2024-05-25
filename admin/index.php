@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_password = 'loli'; // Пароль администратора
+    $admin_password = '_lOlipop123'; // Пароль администратора
     if ($_POST['password'] === $admin_password) {
         $_SESSION['admin_logged_in'] = true;
     } else {

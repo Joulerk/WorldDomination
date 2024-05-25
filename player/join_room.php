@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-group">
                     <label for="password"><i class="material-icons">lock</i> Пароль:</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
+                    <input type="password" name="password" id="password" class="form-control" value="1" required>
                 </div>
                 <button type="submit" class="btn btn-success mt-3"><i class="material-icons">play_arrow</i> Начать игру</button>
             </form>
@@ -83,6 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include '../includes/footer.php'; ?>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -158,9 +158,6 @@ foreach ($game_data['countries'] as &$country) {
             handleLoan($country, (int)$actions['loan_amount'], $notifications);
         }
 
-        // Сброс готовности страны
-        $country['ready'] = false;
-
         // Сохранение уведомлений
         $notifications_data[$country['name']] = $notifications;
     }
@@ -172,6 +169,9 @@ foreach ($game_data['countries'] as &$country) {
 
     // Расчет заработка
     calculateEarnings($country, $game_data['global_ecology'], $notifications_data[$country['name']]);
+
+    // Сброс готовности страны
+    $country['ready'] = false;
 }
 
 // Увеличение номера раунда

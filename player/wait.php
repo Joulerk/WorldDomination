@@ -9,8 +9,26 @@ if (!$game_data) {
 }
 
 $country_name = $_SESSION['country_logged_in'];
-$all_ready = true;
+$current_country = null;
 
+foreach ($game_data['countries'] as $country) {
+    if ($country['name'] === $country_name) {
+        $current_country = $country;
+        break;
+    }
+}
+
+if (!$current_country) {
+    die('Страна не найдена.');
+}
+
+// Если страна не готова, перенаправляем на страницу страны
+if (!$current_country['ready']) {
+    header("Location: country.php?country=" . urlencode($country_name) . "&room=" . urlencode($room_name));
+    exit();
+}
+
+$all_ready = true;
 foreach ($game_data['countries'] as $country) {
     if (!$country['ready']) {
         $all_ready = false;

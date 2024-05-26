@@ -24,39 +24,76 @@ $current_round = $game_data['current_round'];
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .country-row:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .city-status.alive {
+            color: green;
+            font-weight: bold;
+        }
+        .city-status.dead {
+            color: red;
+            font-weight: bold;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .icon {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
 
 <div class="container mt-5">
-    <h1 class="text-center display-4 mb-4">Итоги раунда <?php echo $current_round - 1; ?> <i class="material-icons">assessment</i></h1>
-    <div class="card shadow-sm mb-5 animated fadeIn">
+    <h1 class="text-center display-4 mb-4 animate__animated animate__fadeInDown">Итоги раунда <?php echo $current_round - 1; ?> <i class="fas fa-chart-line"></i></h1>
+    <div class="card shadow-sm mb-5 animate__animated animate__fadeIn">
         <div class="card-body text-center">
-            <h3 class="card-title"><i class="material-icons">eco</i> Мировая экология: <?php echo $global_ecology; ?>%</h3>
+            <h3 class="card-title"><i class="fas fa-seedling icon"></i> Мировая экология: <?php echo $global_ecology; ?>%</h3>
         </div>
     </div>
-    <canvas id="resultsChart" width="400" height="200"></canvas>
-    <div class="card shadow-sm mt-5 animated fadeIn">
+    <canvas id="resultsChart" width="400" height="200" class="animate__animated animate__fadeIn"></canvas>
+    <div class="card shadow-sm mt-5 animate__animated animate__fadeIn">
         <div class="card-body">
-            <h3 class="card-title"><i class="material-icons">flag</i> Данные о странах</h3>
+            <h3 class="card-title"><i class="fas fa-flag icon"></i> Данные о странах</h3>
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                 <tr>
                     <th>Страна</th>
                     <th>Развитие (%)</th>
+                    <th>Города</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($countries as $index => $country): ?>
-                    <tr class="<?php echo $index === 0 ? 'table-success' : ''; ?>">
+                    <tr class="country-row animate__animated animate__fadeInUp <?php echo $index === 0 ? 'table-success' : ''; ?>">
                         <td>
                             <?php echo htmlspecialchars($country['name']); ?>
                             <?php if ($index === 0): ?>
-                                <i class="material-icons text-success">emoji_events</i>
+                                <i class="fas fa-trophy text-success icon"></i>
                             <?php endif; ?>
                         </td>
                         <td><?php echo $country['development']; ?></td>
+                        <td>
+                            <ul>
+                                <?php foreach ($country['cities'] as $city): ?>
+                                    <li>
+                                        <?php echo htmlspecialchars($city['name']); ?> (Развитие: <?php echo $city['development']; ?>%) -
+                                        <span class="city-status <?php echo $city['alive'] ? 'alive' : 'dead'; ?>">
+                                            <?php echo $city['alive'] ? '<i class="fas fa-smile"></i> Цел' : '<i class="fas fa-skull-crossbones"></i> Мертв'; ?>
+                                        </span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -85,6 +122,10 @@ $current_round = $game_data['current_round'];
                     y: {
                         beginAtZero: true
                     }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutBounce'
                 }
             }
         });

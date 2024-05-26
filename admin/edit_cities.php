@@ -6,6 +6,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
@@ -13,10 +15,10 @@
 
 <div class="container mt-5">
     <h1 class="text-center display-4 mb-4">Редактирование городов <i class="material-icons">edit_location</i></h1>
-    <form action="edit_cities_process.php" method="POST">
+    <form action="edit_cities.php" method="GET">
         <div class="form-group">
             <label for="room_name"><i class="material-icons">meeting_room</i> Выберите комнату:</label>
-            <select id="room_name" name="room_name" class="form-control" required onchange="this.form.submit()">
+            <select id="room_name" name="room" class="form-control" required onchange="this.form.submit()">
                 <option value="">-- Выберите комнату --</option>
                 <?php $rooms = loadRoomsData(); ?>
                 <?php foreach ($rooms as $room): ?>

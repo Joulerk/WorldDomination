@@ -60,8 +60,51 @@ footer.footer {
 }
 
 .custom-checkbox {
-    transform: scale(1.2);
-    margin-right: 10px;
+    display: none;
+}
+
+.custom-checkbox-label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    user-select: none;
+    color: #343a40;
+}
+
+.custom-checkbox-label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    background-color: white;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-checkbox:checked + .custom-checkbox-label:before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.custom-checkbox:checked + .custom-checkbox-label:after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 5px;
+    border: solid white;
+    border-width: 0 0 2px 2px;
+    border-radius: 2px;
+}
+
+.custom-checkbox-label:hover:before {
+    border-color: #0056b3;
 }
 
 .notifications-card {
@@ -136,4 +179,38 @@ footer.footer {
 .material-icons {
     vertical-align: middle;
     margin-left: 5px;
+}
+
+/* Новые цвета для карточек */
+.bg-primary {
+    background-color: #007bff !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+/* Смягченные цвета для мертвых городов */
+.bg-secondary {
+    background-color: #6c757d !important;
 }

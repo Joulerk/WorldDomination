@@ -13,11 +13,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $game_data['countries'][$country_index]['nuclear_technology'] = (bool)$country_data['nuclear_technology'];
         $game_data['countries'][$country_index]['alive'] = (bool)$country_data['alive'];
 
+        $total_development = 0;
+        $num_cities = count($country_data['cities']);
+
         foreach ($country_data['cities'] as $city_index => $city_data) {
             $game_data['countries'][$country_index]['cities'][$city_index]['name'] = $city_data['name'];
             $game_data['countries'][$country_index]['cities'][$city_index]['development'] = (int)$city_data['development'];
             $game_data['countries'][$country_index]['cities'][$city_index]['shield'] = (bool)$city_data['shield'];
             $game_data['countries'][$country_index]['cities'][$city_index]['alive'] = (bool)$city_data['alive'];
+
+            // Обновление логики для мертвого города
+            if (!$city_data['alive']) {
+                $game_data['countries'][$country_index]['cities'][$city_index]['development'] = 0;
+                $game_data['countries'][$country_index]['cities'][$city_index]['shield'] = false;
+            }
+
+            $total_development += $game_data['countries'][$country_index]['cities'][$city_index]['development'];
+        }
+
+        // Пересчет развития страны
+        if ($num_cities > 0) {
+            $game_data['countries'][$country_index]['development'] = $total_development / $num_cities;
+        } else {
+            $game_data['countries'][$country_index]['development'] = 0;
         }
     }
 

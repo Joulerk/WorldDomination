@@ -15,6 +15,27 @@ if (!$game_data) {
 $actions_data = loadActionsData($room_name);
 $notifications_data = json_decode(file_get_contents("../data/$room_name/notifications.json"), true) ?: [];
 
+// Новая функция для обработки случайных событий
+function applyRandomEvent(&$country, $events, &$notifications) {
+    $event = $events[array_rand($events)];
+
+    switch ($event['effect']) {
+        case 'reduce_development':
+            $country['development'] -= $event['value'];
+            if ($country['development'] < 0) $country['development'] = 0;
+            break;
+        case 'reduce_money':
+            $country['money'] -= $event['value'];
+            if ($country['money'] < 0) $country['money'] = 0;
+            break;
+        case 'increase_development':
+            $country['development'] += $event['value'];
+            break;
+    }
+
+    $notifications[] = "Событие: " . $event['name'] . " - " . $event['description'];
+}
+
 function handleNuclearTechnology(&$country, &$notifications, &$global_ecology) {
     $country['nuclear_technology'] = true;
     $country['money'] -= 450;
@@ -177,6 +198,12 @@ foreach ($game_data['countries'] as &$country) {
 // Увеличение номера раунда
 $game_data['current_round'] += 1;
 $game_data['round_calculated'] = true; // Метка для завершенного пересчета раунда
+
+// Новая логика: Применение случайных событий
+$events = json_decode(file_get_contents("../data/events.json"), true);
+foreach ($game_data['countries'] as &$country) {
+    applyRandomEvent($country, $events, $notifications_data[$country['name']]);
+}
 
 // Сохранение данных
 saveGameData($room_name, $game_data);

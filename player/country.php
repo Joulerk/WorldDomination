@@ -46,6 +46,8 @@ if (file_exists($notifications_path)) {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         var initialMoney = <?php echo json_encode($country['money']); ?>;
@@ -64,9 +66,9 @@ if (file_exists($notifications_path)) {
     </div>
     <div class="info-header text-center mb-4">
         <h1 class="display-4 mb-4"><?php echo htmlspecialchars($country['name']); ?> <i class="material-icons">flag</i></h1>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center country-info">
             <div class="col-md-3">
-                <div class="card mb-3">
+                <div class="card mb-3 shadow-sm bg-primary text-white">
                     <div class="card-body">
                         <h5 class="card-title"><i class="material-icons">attach_money</i> Количество монет</h5>
                         <p class="card-text" id="money"><?php echo htmlspecialchars($country['money']); ?></p>
@@ -74,7 +76,7 @@ if (file_exists($notifications_path)) {
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card mb-3">
+                <div class="card mb-3 shadow-sm bg-danger text-white">
                     <div class="card-body">
                         <h5 class="card-title"><i class="material-icons">explosive</i> Количество ядерных ракет</h5>
                         <p class="card-text" id="nuclear_missiles"><?php echo htmlspecialchars($country['nuclear_missiles']); ?></p>
@@ -82,7 +84,7 @@ if (file_exists($notifications_path)) {
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card mb-3">
+                <div class="card mb-3 shadow-sm bg-warning text-white">
                     <div class="card-body">
                         <h5 class="card-title"><i class="material-icons">hourglass_empty</i> Номер раунда</h5>
                         <p class="card-text"><?php echo htmlspecialchars($game_data['current_round']); ?>/<?php echo htmlspecialchars($game_data['num_rounds']); ?></p>
@@ -90,10 +92,18 @@ if (file_exists($notifications_path)) {
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card mb-3">
+                <div class="card mb-3 shadow-sm bg-success text-white">
                     <div class="card-body">
                         <h5 class="card-title"><i class="material-icons">eco</i> Процент мировой экологии</h5>
                         <p class="card-text"><?php echo htmlspecialchars($game_data['global_ecology']); ?>%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-3 shadow-sm bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="material-icons">trending_up</i> Развитие страны</h5>
+                        <p class="card-text"><?php echo htmlspecialchars($country['development']); ?>%</p>
                     </div>
                 </div>
             </div>
@@ -107,7 +117,7 @@ if (file_exists($notifications_path)) {
                 <input type="hidden" name="room" value="<?php echo htmlspecialchars($room_name); ?>">
                 <div class="cities-grid">
                     <?php foreach ($country['cities'] as $city_index => $city): ?>
-                        <div class="city-card mb-3 animated fadeIn">
+                        <div class="city-card mb-3 shadow-sm animated fadeIn <?php echo $city['alive'] ? 'bg-light' : 'bg-secondary text-white'; ?>">
                             <div class="card-header card-header-custom">
                                 <h5 class="card-title card-title-custom">
                                     <?php echo isset($city['name']) ? htmlspecialchars($city['name']) : 'Город ' . ($city_index + 1); ?> <i class="material-icons">location_city</i>
@@ -120,11 +130,11 @@ if (file_exists($notifications_path)) {
                                 <p><i class="material-icons">favorite</i> Статус: <?php echo $city['alive'] ? '✔️' : '❌'; ?></p>
                                 <div class="form-group">
                                     <input type="checkbox" class="custom-checkbox" id="build_shield_<?php echo $city_index; ?>" name="build_shield[]" value="<?php echo $city_index; ?>" <?php echo ($city['shield'] || !$country['nuclear_technology'] || $country['money'] < 300 || !$city['alive'] || $is_ready) ? 'disabled' : ''; ?>>
-                                    <label for="build_shield_<?php echo $city_index; ?>">Построить щит <i class="material-icons">security</i></label>
+                                    <label class="custom-checkbox-label" for="build_shield_<?php echo $city_index; ?>">Построить щит <i class="material-icons">security</i></label>
                                 </div>
                                 <div class="form-group">
                                     <input type="checkbox" class="custom-checkbox" id="improve_city_<?php echo $city_index; ?>" name="improve_city[]" value="<?php echo $city_index; ?>" <?php echo ($country['money'] < 300 || !$city['alive'] || $is_ready) ? 'disabled' : ''; ?>>
-                                    <label for="improve_city_<?php echo $city_index; ?>">Улучшить развитие <i class="material-icons">trending_up</i></label>
+                                    <label class="custom-checkbox-label" for="improve_city_<?php echo $city_index; ?>">Улучшить развитие <i class="material-icons">trending_up</i></label>
                                 </div>
                             </div>
                         </div>
@@ -142,11 +152,11 @@ if (file_exists($notifications_path)) {
                 </div>
                 <div class="form-group">
                     <input type="checkbox" class="custom-checkbox" id="build_nuclear_technology" name="build_nuclear_technology" <?php echo ($country['nuclear_technology'] || $country['money'] < 450 || $is_ready) ? 'disabled' : ''; ?>>
-                    <label for="build_nuclear_technology">Построить ядерную технологию <i class="material-icons">science</i></label>
+                    <label class="custom-checkbox-label" for="build_nuclear_technology">Построить ядерную технологию <i class="material-icons">science</i></label>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" class="custom-checkbox" id="invest_in_ecology" name="invest_in_ecology" <?php echo ($country['money'] < 50 || $is_ready) ? 'disabled' : ''; ?>>
-                    <label for="invest_in_ecology">Вложиться в экологию <i class="material-icons">eco</i></label>
+                    <label class="custom-checkbox-label" for="invest_in_ecology">Вложиться в экологию <i class="material-icons">eco</i></label>
                 </div>
 
                 <h3>Банк <i class="material-icons">account_balance</i></h3>
@@ -186,7 +196,7 @@ if (file_exists($notifications_path)) {
             <div class="countries-grid">
                 <?php foreach ($game_data['countries'] as $target_country): ?>
                     <?php if ($target_country['name'] !== $country['name']): ?>
-                        <div class="country-card mb-3 shadow-sm animated fadeIn">
+                        <div class="country-card mb-3 shadow-sm animated fadeIn bg-light">
                             <div class="card-header card-header-custom">
                                 <h5 class="card-title card-title-custom"><?php echo htmlspecialchars($target_country['name']); ?> <i class="material-icons">flag</i></h5>
                             </div>
@@ -194,12 +204,12 @@ if (file_exists($notifications_path)) {
                                 <div class="row">
                                     <?php foreach ($target_country['cities'] as $target_city_index => $target_city): ?>
                                         <div class="col-md-6 mb-2">
-                                            <div class="form-group">
+                                            <div class="form-group <?php echo !$target_city['alive'] ? 'bg-secondary text-white' : ''; ?>">
                                                 <p><i class="material-icons">location_city</i> <?php echo isset($target_city['name']) ? htmlspecialchars($target_city['name']) : 'Город ' . ($target_city_index + 1); ?></p>
                                                 <p><i class="material-icons">trending_up</i> Развитие: <?php echo htmlspecialchars($target_city['development']); ?>%</p>
                                                 <p><i class="material-icons">favorite</i> Статус: <?php echo $target_city['alive'] ? '✔️' : '❌'; ?></p>
                                                 <input type="checkbox" class="custom-checkbox" id="launch_missile_<?php echo $target_country['name'] . '_' . $target_city_index; ?>" name="launch_missiles[<?php echo $target_country['name']; ?>][]" value="<?php echo $target_city_index; ?>" <?php echo ($country['nuclear_missiles'] <= 0 || !$target_city['alive'] || $is_ready) ? 'disabled' : ''; ?>>
-                                                <label for="launch_missile_<?php echo $target_country['name'] . '_' . $target_city_index; ?>">Запустить ракету <i class="material-icons">explosive</i></label>
+                                                <label class="custom-checkbox-label" for="launch_missile_<?php echo $target_country['name'] . '_' . $target_city_index; ?>">Запустить ракету <i class="material-icons">explosive</i></label>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>

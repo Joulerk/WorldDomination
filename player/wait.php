@@ -95,6 +95,8 @@ $round_calculated = isset($game_data['round_calculated']) && $game_data['round_c
         <?php else: ?>
             <div class="alert alert-info animated fadeIn"><i class="material-icons">group</i> Ожидание других игроков...</div>
         <?php endif; ?>
+
+        <a href="manage_round.php?room=<?php echo urlencode($room_name); ?>" class="btn btn-warning btn-lg mb-3 animated bounce"><i class="material-icons">manage_accounts</i> Управление раундом</a>
     </div>
 </div>
 
